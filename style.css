@@ -1,0 +1,77 @@
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+body{   
+    background-image: linear-gradient(to right ,rgba(239, 244, 242, 0.778),rgb(209, 228, 238));
+    min-height: 100vh;
+    overflow: hidden;
+    /* display: grid; */
+}
+#heading{
+ 
+    background-color: rgb(90, 175, 254);
+    padding: 50px;
+    border: 2px solid white;
+}
+.h1_heading{
+    text-align: center;
+    text-shadow: 2px 2px black;
+    color: aliceblue;
+}
+
+.listicon{
+    width: 400px;
+    margin: 50px;
+    color: rgb(14, 14, 14);
+    font-size: larger;
+    position: absolute;
+    /* visibility: hidden; */
+    animation: makeVisible 1s ease-in forwards;
+    /* display: block; */
+    
+}
+.listiconhide{
+    animation: makeInvisible 1s ease-in forwards;
+}
+.popupbox{
+    transform: translate(-100%);
+    background-color: rgb(36, 133, 243);
+    display: absolute;
+    min-height: 100vh;
+    width: fit-content;
+    
+}
+
+.popupitem{
+    text-decoration: none;
+    font-size: 2em;
+    border-bottom: 2px solid white;
+    padding: 50px;
+    text-align: center;
+}
+
+.popupitem:hover{
+    background-color: black;
+    color: white;
+}
+
+@keyframes makeVisible {
+    0% {
+        opacity : 0%;
+    }
+    100%{
+        opacity :100%;
+    }
+}
+
+@keyframes makeInvisible {
+    0% {
+        opacity : 100%;
+    }
+    100%{
+        opacity :0%;
+        display: none;
+    }
+}
