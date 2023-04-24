@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="heading">    
+        <h1 class="h1_heading">ATTENDANCE MANAGEMENT</h1>
+    </header>
+    <i class="fa-solid fa-list listicon"></i>
+    <section class="logout">Logout</section>
+    <section class="popupbox">
+        <ul>
+            <li id="popuppanel_close" class="popupitem"><i class="fa-solid fa-xmark"></i></li>
+            <li  class="popupitem highlight"><p class="popupitem_p">Add new user</p></li>
+            <li  class="popupitem"><p class="popupitem_p">leave panel</p></li>
+        </ul>
+    </section>
+
+    <section class="form-center">
+        <form action="/newuser" method="POST">
+            <label for="fname">First Name</label>
+            <input id="fname" name="fname" type="text">
+            <label for="lname">Last Name</label>
+            <input id="lname" name="lname" type="text">
+            <label for="usrname">Username</label>
+            <input id="usrname" name="usrname" type="text">
+            <label for="psw">Password</label>
+            <input id="psw" name="psw" type="text">
+            <label for="pos">Role</label>
+            <select id="pos" name="pos">
+                <option value="F">Faculty</option>
+                <option value="F">Student</option>
+                <option value="F">Admin</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+    
+    
+    <!-- <script type="text/javascript" src="script.js"></script> -->
+</body>
+</html>

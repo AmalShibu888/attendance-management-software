@@ -1,0 +1,219 @@
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+body{   
+    background-image: linear-gradient(to right ,rgba(239, 244, 242, 0.778),rgb(209, 228, 238));
+    min-height: 100vh;
+    /* overflow: hidden; */
+    /* display: grid; */
+}
+#heading{
+    /* position: sticky;
+    top: 0; */
+    background-color: rgb(90, 175, 254);
+    padding: 50px;
+    border: 2px solid white;
+}
+.h1_heading{
+    text-align: center;
+	font-size: 4em;
+    text-shadow: 2px 2px black;
+    color: aliceblue;
+}
+
+.listicon{
+    /* width: 400px; */
+    margin: 20px;
+    color: rgb(14, 14, 14);
+    font-size: larger;
+    position: absolute;
+    top: 30px;
+    /* visibility: hidden; */
+    animation: makeVisible 1s ease-in forwards;
+    /* display: block; */
+    
+}
+.listiconhide{
+    animation: makeInvisible 1s ease-in forwards;
+}
+.popupbox{
+    transform: translate(-100%);
+    background-color: rgb(36, 133, 243);
+    position: absolute;
+    height: 150vh;
+    width: fit-content;
+    top: 0px;
+    box-shadow: 2px 2px black;
+
+}
+
+.popupitem{
+    text-decoration: none;
+    font-size: 2em;
+    border-bottom: 2px solid white;
+    padding: 50px;
+    text-align: center;
+}
+ul a{
+    text-decoration: none;
+    color: black;
+}
+.popupitem_a{
+    text-decoration: none;
+    color: black;
+}
+.popupitem:hover{
+    background-color: black;
+    color: white;
+}
+
+.logout{
+    position: absolute;
+    right: 20px;
+    font-size: 1.8em;
+    padding: 20px;
+    color: crimson;
+    cursor: pointer;
+}
+
+.logout:hover{
+    text-shadow: 1px 1px black;
+}
+.content{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    margin-top: 50px;
+}
+
+.highlight{
+    background-color: gold;
+}
+
+@keyframes makeVisible {
+    0% {
+        opacity : 0%;
+    }
+    100%{
+        opacity :100%;
+    }
+}
+
+@keyframes makeInvisible {
+    0% {
+        opacity : 100%;
+    }
+    100%{
+        opacity :0%;
+        display: none;
+    }
+}
+
+
+form {
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	background-color: rgb(154, 215, 245);
+	border-radius: 10px;
+	width: 80vw;
+	box-shadow: 2px 2px black;
+	/* text-align: center; */
+}
+.form-center{
+    margin-top: 40px;
+	min-height: 70vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+input ,select {
+	padding: 10px;
+	margin-bottom: 20px;
+	width: 100%;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 1.5em;
+}
+
+.form-button {
+	padding: 10px;
+	background-color: #4CAF50;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 1.5em;
+	display: block;
+	margin: auto;
+}
+
+.form-button:hover {
+	background-color: #3e8e41;
+}
+
+#errorMessage {
+	color: red;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.top-buttons{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    /* text-align: center; */
+}
+
+.top-button{
+    font-size: 1.2em;
+    color: white;
+    background-color: black;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px;
+    /* min-width: 60px */
+    
+}
+
+.highlight-top-button{
+    background-color: #4CAF50;
+}
+#CourseStudentCon{
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+    /* align-items: center; */
+    /* background-color: black; */
+}
+
+.studentT table,tr,td,th {
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    text-align: center;
+}
+.studentRow{
+    cursor: pointer;
+}
+
+.studentT table{
+    background-color: rgb(232, 231, 231);
+}
+
+.studentT tbody tr :nth-child(even){
+    background-color: #ccc;
+}
+
+
+

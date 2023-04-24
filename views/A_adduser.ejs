@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/header.ejs') %>
+    <i class="fa-solid fa-list listicon"></i>
+    <a href="/A/<%= id %>/logout"><section class="logout">Logout</section></a>
+    <section class="top-buttons">
+        <a href="/A/<%= id %>"><button id="add-user-btn" data-userid="<%= id %>" class="top-button 
+        <% if(display == 0){ %>
+         highlight-top-button
+         <%}%>">Add User</button></a>
+        <a href="/A/<%= id %>/delUser"><button id="del-user-btn" data-userid="<%= id %>" class="top-button 
+        <% if(display == 1){ %>
+            highlight-top-button
+            <%}%>">Delete User</button></a>
+        <a href="/A/<%= id %>/resUser"><button id="del-user-btn" data-userid="<%= id %>" class="top-button 
+            <% if(display == 2){ %>
+                highlight-top-button
+                <%}%>">Reset Password</button></a>
+    </section>
+    <section class="popupbox">
+        <ul>
+            <li id="popuppanel_close" class="popupitem"><i class="fa-solid fa-xmark"></i></li>
+            <a href="/A/<%= id %>"><li  class="popupitem highlight"><p class="popupitem_p">Manage User</p></li></a>
+            <a href="/A/<%= id %>/course"><li  class="popupitem"><p class="popupitem_p">Course Panel</p></li></a>
+        </ul>
+    </section>
+    <% if(display == 0){ %>
+    <section class="form-center">
+        <form action="/A/<%= id %>/newuser" method="POST">
+            <label for="fname">First Name</label>
+            <input id="fname" name="fName" type="text" required>
+            <label for="lname">Last Name</label>
+            <input id="lname" name="lName" type="text" required>
+            <label for="usrname">Username</label>
+            <input id="usrname" name="username" type="text" required>
+            <label for="psw">Password</label>
+            <input id="psw" name="password" type="text" required>
+            <label for="pos">Role</label>
+            <select id="pos" name="designation" required>
+                <option value="F">Faculty</option>
+                <option value="S">Student</option>
+                <option value="A">Admin</option>
+            </select>
+            <button type="submit" class="form-button">Submit</button>
+        </form>
+    </section>
+    <% }else if(display == 1){ %>
+        <section class="form-center">
+            <form action="/A/<%= id %>/deleteUser" method="POST">
+                <label for="username">Users</label>
+                <select name="username" id="username">
+                    <option value="all">__USERS__</option>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.username %>"><%= user.username %> ,<%= user.fName %> <%= user.lName %></option>   
+                    <% }); %>
+                </select>
+                <button type="submit" class="form-button">Delete</button>
+            </form>
+        </section>
+    
+    <%}else{%>
+        <section class="form-center">
+            <form action="/A/<%= id %>/resetUser" method="POST">
+                <label for="username">Users</label>
+                <select name="username" id="username">
+                    <option value="all">__USERS__</option>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.username %>"><%= user.username %> ,<%= user.fName %> <%= user.lName %></option>   
+                    <% }); %>
+                </select>
+                <button type="submit" class="form-button">Reset</button>
+            </form>
+        </section>
+        <%}%>
+    <script src="/script.js"></script>
+    <!-- <script src="/AUserManage.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/header.ejs') %>
+    <i class="fa-solid fa-list listicon"></i>
+    <a href="/A/<%= id %>/logout"><section class="logout">Logout</section></a>
+    <section class="top-buttons">
+        <a href="/A/<%= id %>/course"><button id="add-user-btn" data-userid="<%= id %>" class="top-button 
+        <% if(display == 0){ %>
+         highlight-top-button
+         <%}%>">Add Course</button></a>
+        <a href="/A/<%= id %>/0"><button id="del-user-btn" data-userid="<%= id %>" class="top-button 
+        <% if(display == 1){ %>
+            highlight-top-button
+            <%}%>">Edit Course</button></a>
+        <a href="/A/<%= id %>/deleteCourse"><button id="del-user-btn" data-userid="<%= id %>" class="top-button 
+            <% if(display == 2){ %>
+                highlight-top-button
+                <%}%>">Delete Course<button></a>
+    </section>
+    <section class="popupbox">
+        <ul>
+            <li id="popuppanel_close" class="popupitem"><i class="fa-solid fa-xmark"></i></li>
+            <a href="/A/<%= id %>"><li  class="popupitem"><p class="popupitem_p">Manage User</p></li></a>
+            <a href="/A/<%= id %>/course"><li  class="popupitem highlight"><p class="popupitem_p">Course Panel</p></li></a>
+        </ul>
+    </section>
+    <% if(display == 0){ %>
+    <section class="form-center">
+        <form action="/A/<%= id %>/newCourse" method="POST">
+            <label for="cname">Course Name</label>
+            <input id="cname" name="cName" type="text" required>
+            <label for="cid">Course ID</label>
+            <input id="cid" name="cid" type="text" required>
+            <label for="f1">Faculty In Charge</label>
+
+            <select name="f1" id="f1">
+                <!-- <option value="null">__SELECT__</option> -->
+                <% faculties.forEach(faculty =>{ %>
+                    <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %>, <%= faculty.fName %> <%= faculty.lName %></option>
+                <% }) %>
+            </select>
+
+            <label for="f2">Faculty 2nd Charge</label>
+            <select name="f2" id="f2">
+                <option value='{"username" : "NULL"}'>__SELECT__</option>
+                <% faculties.forEach(faculty =>{ %>
+                    <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %>, <%= faculty.fName %> <%= faculty.lName %></option>
+                <% }) %>
+            </select>
+
+            <label for="f3">Faculty 3rd Charge</label>
+            <select name="f3" id="f3">
+                <option value='{"username" : "NULL"}'>__SELECT__</option>
+                <% faculties.forEach(faculty =>{ %>
+                    <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %>, <%= faculty.fName %> <%= faculty.lName %></option>
+                <% }) %>
+            </select>
+            <button type="submit" class="form-button">Submit</button>
+        </form>
+    </section>
+    <% }else if(display == 1){ %>
+        <section class="form-center">
+            <form action="/A/<%= id %>/<%= cid %>/editCourse" id="courseEditForm" method="POST">
+                <label for="cid">Select Course</label>
+                <select data-id="<%=id%>" data-cid="<%=cid%>" name="cid" id="cid">
+                    <option value="Null">__SELECT__</option>
+                    <% courses.forEach(course => { %>
+                        <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                    <% }); %>
+                </select>
+                <% if(cid  != 0) {%>
+                <label for="cname">Course Name</label>
+                <input id="cname" name="cName" value="<%= course.cName %>" type="text" required>
+
+                <label for="cid">Course ID</label>
+                <input id="cid" name="cid" value="<%= cid %>" type="text" required>
+
+                <label for="f1">Faculty In Charge</label>
+                <select name="f1" id="f1">
+                    <option value='{"username" : "<%=course.f1.username %>", "fName" : "<%= course.f1.fName %>" , "lName" : "<%= course.f1.lName %>" }'><%= course.f1.username %> ,<%= course.f1.fName %> <%= course.f1.lName %></option>
+                    <% faculties.forEach(faculty => { %>
+                        <% if(faculty.username != course.f1.username) {%>
+                        <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %> ,<%= faculty.fName %> <%= faculty.lName %></option>   
+                    <% }}); %>
+                </select>
+
+
+                <label for="f2">Faculty 2nd In Charge</label>
+                <select name="f2" id="f2">
+                    <option value='{"username" : "<%=course.f2.username %>", "fName" : "<%= course.f2.fName %>" , "lName" : "<%= course.f2.lName %>" }'"><%= course.f2.username %> ,<%= course.f2.fName %> <%= course.f2.lName %></option>
+                    <% faculties.forEach(faculty => { %>
+                        <% if(faculty.username != course.f2.username){ %>
+                        <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %> ,<%= faculty.fName %> <%= faculty.lName %></option>   
+                    <% }}); %>
+                </select>
+
+                <label for="f3">Faculty 3rd In Charge</label>
+                <select name="f3" id="f3">
+                    <option value='{"username" : "<%=course.f3.username %>", "fName" : "<%= course.f3.fName %>" , "lName" : "<%= course.f3.lName %>" }'><%= course.f3.username %> ,<%= course.f3.fName %> <%= course.f3.lName %></option>
+                    <% faculties.forEach(faculty => { %>
+                        <% if(faculty.username != course.f3.username) {%>
+                        <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'"><%= faculty.username %> ,<%= faculty.fName %> <%= faculty.lName %></option>   
+                    <% }}); %>
+                </select>
+                <div  id="CourseStudentCon">
+                    <section class="studentT" id="studentT1">
+                        <label>Students In Course</label>
+                        <table>
+                            <tr>
+                                <th>Student Id</th>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                            </tr>
+                            
+                            <% course.students.forEach((student) =>{ %>
+                                <tr class="studentRow" data-table="0" data-student='{"username" : "<%= student.username %>","fName" : "<%= student.fName %>","lName" : "<%= student.lName %>"}'>
+                                    <td><%= student.username %></td>
+                                    <td><%= student.fName%> <%= student.lName %></td>
+                                    <td><i class="fa-regular fa-circle-check" style="color: green"></i></td>
+                                </tr>
+                            <% }) %>
+                        </table>
+                    </section>
+
+                    <section class="studentT" id="studentT2">
+                        <label>Students To Add</label>
+                        <table>
+                            <tr>
+                                <th>Student Id</th>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                            </tr>
+                            
+                            <% studentsNotInCourse.forEach((student) =>{ %>
+                                <tr class="studentRow" data-table="1" data-student = '{"username" : "<%= student.username %>","fName" : "<%= student.fName %>","lName" : "<%= student.lName %>"}'>
+                                    <td><%= student.username %></td>
+                                    <td><%= student.fName%> <%= student.lName %></td>
+                                    <td><i class="fa-solid fa-circle-xmark" style="color: crimson"></i> </i></td>
+                                </tr>
+                            <% }) %>
+                        </table>
+                    </section>
+                </div>
+                <button type="submit" class="form-button">Save Changes</button>
+                <% } %>
+            </form>
+        </section>
+        <script src="/A_course.js"></script>
+    <%}else{%>
+        
+        <section class="form-center">
+            <form action="/A/<%= id %>/deleteCourse" method="POST">
+                <label for="cid">Users</label>
+                <select name="cid" id="cid">
+                    <option value="0">__COURSES__</option>
+                    <% courses.forEach(course => { %>
+                        <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                    <% }); %>
+                </select>
+
+                
+                <button type="submit" class="form-button">Delete</button>
+            </form>
+        </section>
+        <%}%>
+    <script src="/script.js"></script>
+    <!-- <script src="/AUserManage.js"></script> -->
+</body>
+</html>

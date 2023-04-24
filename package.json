@@ -1,0 +1,24 @@
+{
+  "name": "attendance-management-software",
+  "version": "1.0.0",
+  "description": "basic attendance management software for an institute",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmalShibu888/attendance-management-software.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmalShibu888/attendance-management-software/issues"
+  },
+  "homepage": "https://github.com/AmalShibu888/attendance-management-software#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  }
+}
