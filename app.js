@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 const CourseData = require('./models/course_data.js')
-// const CourseStudent = require('./models/course_student.js')
+const Attendance = require('./models/Attendance.js')
 
 const LoginData = require('./models/login_data.js');
 let userid = "";
@@ -55,8 +56,8 @@ app.post('/login' , (req,res) =>{
 })
 
 
-app.get('/A/:id/logout' , (req,res) =>{
-    // console.log(req.body);
+app.get('/user/:id/logout' , (req,res) =>{
+    console.log(req.body);
     const id = req.params.id;
     LoginData.findByIdAndUpdate( id , {status : false})
     .then(result =>{console.log(result);res.redirect('/')})
@@ -264,6 +265,204 @@ app.get('/find' , (req,res)=>{
 
 })
 
+app.get('/F/:id',(req,res)=>{
+    
+    const id = req.params.id;
+    LoginData.findById(id)
+    .then(Faculty =>{
+        // console.log('y');
+        CourseData.find({$or: [{"f1.username" : Faculty.username} , {"f2.username" : Faculty.username},{"f3.username" : Faculty.username}]})
+        .then(courses =>{
+            res.render('F_attR', {title : "Mark Attendance" ,id,courses,display : 0});
+        })
+        .catch(err =>{console.log(err)});
+    })
+    .catch(err =>{console.log(err)});
+})
+
+
+const attDataGen = (students ,studentAttendance )=>{
+    let n = 0
+    let i = 0;
+    let dates = [];
+    let courseAtt = [];
+    // console.log(students)
+    for(let j= 0;j<students.length;j++){
+        let sid = students[j].username;
+        let studentatt = [];
+        let c = 0;
+        while(i<studentAttendance.length && studentAttendance[i].sid == sid){
+            studentatt.push(studentAttendance[i]);
+            i++;
+            c++;
+        }
+        if(c>n){
+            dates = [...studentatt];
+            n = c;
+        }
+        courseAtt.push(studentatt);
+    }
+    let res = {};
+    res.dates = dates;
+    res.courseAtt = courseAtt;
+    res.n = n;
+    // console.log(dates);
+    return res;
+}
+app.get('/F/:id/:cid',(req,res)=>{
+    const id = req.params.id;
+    const cid = req.params.cid;
+    CourseData.findOne({cid:cid})
+    .then(course =>{
+        Attendance.find({ cid : cid}).sort({sid : 1,slot : 1})
+        .then(studentAttendance =>{
+        const courseAttendance = attDataGen(course.students ,studentAttendance );
+        // courseAttendance.push(studentAttendance);
+                    console.log(courseAttendance);
+                    // console.log(courseAttendance.courseAtt);
+        res.render('F_attR', {title : "Mark Attendance" ,id,cid ,courseAttendance : courseAttendance.courseAtt ,course ,n :courseAttendance.n,dates : courseAttendance.dates ,display : 1});
+
+
+        })
+        .catch(err=>{console.log(err)})
+            // return Promise.all(courseAttendance);
+    })
+
+    .catch(err=>{console.log(err)})
+    // })/
+})
+
+app.post('/F/:id/:cid',async (req,res)=>{
+    const id = req.params.id;
+    const cid = req.params.cid;
+    const data = req.body;
+    // console.log(data);
+    let newSlotAtt= [];
+    
+    if(data.newstatus == 0){
+        // console.log("data.studentsList");
+        data.studentsList.forEach(studentId =>{
+            let newobj = JSON.parse(JSON.stringify((data.date)));
+            newobj.sid = studentId;
+            newobj.cid = cid;
+            newobj.attendance = true;
+            newSlotAtt.push(newobj);
+            // console.log(data.date);
+        });
+        // console.log(newSlotAtt);
+        Attendance.insertMany(newSlotAtt)
+        .then(async result =>{
+            Attendance.insertMany(data.newstudent)
+            .then(async resu =>{
+                for(const change of data.attchanges){
+               
+                    const result = await Attendance.findOneAndUpdate({cid : cid , sid : change.sid , slot : change.slot} , {attendance : change.attendance});
+                }
+                res.json({redirect : `/F/${id}/${cid}`}) 
+            })
+            .catch(err =>{console.log(err)})
+            
+        })
+        .catch(err =>{console.log(err)})
+    }else{
+        Attendance.insertMany(data.newstudent)
+        .then(async resu =>{
+            // console.log("y");
+            for(const change of data.attchanges){
+           
+                const result = await Attendance.findOneAndUpdate({cid : cid , sid : change.sid , slot : change.slot} , {attendance : change.attendance});
+            }
+            res.json({redirect : `/F/${id}/${cid}`}) 
+        })
+        .catch(err =>{console.log(err)}) 
+    }
+    
+    // })/
+})
+
+
+function getCoursesFromAttendance(att){
+    let res = [];
+    let n = att.length, i = 0;
+    while(i<n){
+        res.push(att[i].cid);
+        let s = att[i].cid;
+        while(i<n && att[i].cid == s)
+            i++;
+    }
+    return res;
+
+}
+app.get('/S/:id' ,async (req,res)=>{
+    const id = req.params.id;
+    const student = await LoginData.findById(id);
+    let courses =  await Attendance.find({sid : student.username}).sort({cid : 1,slot : 1});
+    courses = getCoursesFromAttendance(courses);
+    let Courses = []
+    for(const course of courses){
+        const cd = await CourseData.findOne({cid : course})
+        Courses.push(cd);
+    }
+
+
+    res.render('S_attView', {title : "View Attendance" ,id ,courses : Courses,display : 0});
+})
+
+function getDateFromAtt(att){
+    let res = [] , i = 0;
+    while(i<att.length){
+        const at = att[i];
+        let s = ""
+        if(at.date <10)
+            s +=`0${at.day}/`
+        else
+            s +=`${at.day}/`
+        
+        if(at.month <10)
+            s +=`0${at.month}/${at.year}`
+        else
+            s +=`${at.month}/${at.year}`
+        
+        let obj = {}
+        obj.date = s;
+        s = "";
+        if(at.hour <10)
+            s +=`0${at.hour}:`
+        else
+            s +=`${at.hour}:`;
+        
+        if(at.minute <10)
+            s +=`0${at.minute}`
+        else
+            s +=`${at.minute}`
+        obj.time = s;
+        res.push(obj);
+        i++;
+    }
+    return res;
+}
+
+function getAttFromAtt(att){
+    let res = [];
+    for(const at of att){
+        res.push(at.attendance);
+    }
+    return res;
+}
+
+app.get('/S/:id/:cid' ,async (req,res)=>{
+    const id = req.params.id;
+    const cid = req.params.cid;
+    
+    const student = await LoginData.findById(id);
+    const StudentAtt = await Attendance.find({cid : cid , sid : student.username}).sort({slot : 1});
+    // console.log(StudentAtt);
+
+    const dates = getDateFromAtt(StudentAtt);
+    const attendances = getAttFromAtt(StudentAtt);
+    console.log(attendances);
+    res.render('S_attView', {title : "View Attendance" ,    attendances , dates,cid ,id ,display : 1});
+})
 
 function loginVerification(req,res,next){
     const id = req.params.id;

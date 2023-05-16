@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/header.ejs') %>
+    <i class="fa-solid fa-list listicon"></i>
+    <a href="/user/<%= id %>/logout"><section class="logout">Logout</section></a>
+    <section class="popupbox">
+        <ul>
+            <li id="popuppanel_close" class="popupitem"><i class="fa-solid fa-xmark"></i></li>
+            <a href="/S/<%=id%>"><li  class="popupitem highlight"><p class="popupitem_p">View Attendance</p></li></a>
+            <li  class="popupitem"><p class="popupitem_p">Leave Panel</p></li>
+        </ul>
+    </section>
+    <% if(display == 0) {%>
+    <section class="form-center">
+        <form action="/F/<%= id %>" method="POST">
+            <label for="cid">Select Course</label>
+            <select name="cid" data-username="<%=id%>" id="cid">
+                <option value="">__COURSES__</option>
+                <% courses.forEach(course => { %>
+                    <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                <% }); %>
+            </select>
+            
+            
+        </form>
+    </section>
+    <% } %>
+    <% if(display == 1) {%>
+        <div class="display-1">
+        <section id="page-body">
+            <table data-id="<%=id%>" data-cid="<%=cid%>" id="attTable">
+                <tr>
+                    <% dates.forEach(date =>{ %>
+                        <th><p><%=date.date %></p>, <p><%=date.time%></p></th>
+                    <% }) %>
+                </tr>
+                <tr>
+                    <% attendances.forEach(att =>{ 
+                        if(att){ %>
+                            <td><i id = "check" class="fa-solid fa-check" style = "color :green"></i></td>
+                        <%}else{ %>
+                            <td><i id = "xmark" class="fa-solid fa-xmark" style = "color : crimson"></i></td>
+                        <%}%>
+                    <% }) %>
+                </tr>
+            </table>            
+        </section>
+        <button id="subButton" class="form-button">Save Changes</button>
+        <% } %>
+    </div>
+    <script type="text/javascript" src="/S_attView.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+</body>
+</html>

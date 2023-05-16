@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/header.ejs') %>
+    <i class="fa-solid fa-list listicon"></i>
+    <a href="/user/<%= id %>/logout"><section class="logout">Logout</section></a>
+    <section class="popupbox">
+        <ul>
+            <li id="popuppanel_close" class="popupitem"><i class="fa-solid fa-xmark"></i></li>
+            <a href="/F/<%=id%>"><li  class="popupitem highlight"><p class="popupitem_p">Mark Attendance</p></li></a>
+            <li  class="popupitem"><p class="popupitem_p">Leave Panel</p></li>
+        </ul>
+    </section>
+    <% if(display == 0) {%>
+    <section class="form-center">
+        <form action="/F/<%= id %>" method="POST">
+            <label for="cid">Select Course</label>
+            <select name="cid" data-username="<%=id%>" id="cid">
+                <option value="">__COURSES__</option>
+                <% courses.forEach(course => { %>
+                    <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                <% }); %>
+            </select>
+            
+            
+        </form>
+    </section>
+    <% } %>
+    <% if(display == 1) {%>
+        <div class="display-1">
+        <section id="page-body">
+            <table data-id="<%=id%>" data-cid="<%=cid%>" id="attTable">
+                <tr>
+                    <th></th>
+                    <% course.students.forEach(student =>{ 
+                        const studentobj = student; %>
+                        <th data-student="<%=studentobj.username%>"><%=student.username %>, <%=student.fName %> <%=student.lName %></th>
+                    <% }) %>
+                </tr>
+                <% for(let i = 0;i<dates.length;i++){ %>
+                    <% let s = `${dates[i].day}.${dates[i].month}.${dates[i].year}`; 
+                        let s2 = `${dates[i].hour}:${dates[i].minute}`
+                        let obj = {};
+                        obj.day = dates[i].day;
+                        obj.month = dates[i].month;
+                        obj.year = dates[i].year;
+                        obj.hour = dates[i].hour;
+                        obj.minute = dates[i].minute;
+                        obj.slot = i + 1;
+                        let s3 = JSON.stringify(obj) ;%>
+                    <tr data-obj="<%=s3%>">
+                        
+                        <th ><p><%=s%></p><p><%=s2%></p></th>
+                        <% for(let j = 0;j<course.students.length;j++){
+                            let studentObj = {
+                                    sid : course.students[j].username,
+                                    slot : i + 1
+                                } 
+                                let s4 = JSON.stringify(studentObj);%>
+                            
+                            <% if(courseAttendance[j].length != 0){ 
+                                if(courseAttendance[j][i].attendance){ %>
+                                    <td data-changes = "0" data-newstat = "0" data-obj ="<%=s4%>"><i id = "check" class="fa-solid fa-check" style = "color :green"></i></td>
+                                <% }else {%>
+                                    <td data-changes = "0" data-newstat = "0" data-obj ="<%=s4%>"><i id = "xmark" class="fa-solid fa-xmark" style = "color : crimson"></i></td>
+                            <% }}else{ %>
+                                    <td data-changes = "0" data-newstat = "1" data-obj ="<%=s4%>"><i id = "xmark" class="fa-solid fa-xmark" style = "color : crimson"></i></td>
+                        <%}}%>     
+                    </tr>
+                
+                <%}%>
+            </table>            
+        </section>
+        <button id="subButton" class="form-button">Save Changes</button>
+        <% } %>
+    </div>
+    <script type="text/javascript" src="/F_attR.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+</body>
+</html>
