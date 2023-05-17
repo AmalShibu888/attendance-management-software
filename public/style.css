@@ -4,7 +4,7 @@
     margin: 0px;
 }
 body{   
-    background-image: linear-gradient(to right ,rgba(239, 244, 242, 0.778),rgb(209, 228, 238));
+    background-image: linear-gradient(to right ,rgba(126, 206, 255, 0.778),rgb(0, 136, 199));
     min-height: 100vh;
     /* overflow: hidden; */
     /* display: grid; */
@@ -12,15 +12,16 @@ body{
 #heading{
     /* position: sticky;
     top: 0; */
-    background-color: rgb(90, 175, 254);
+    background-color: rgb(0, 114, 159);
     padding: 50px;
-    border: 2px solid white;
+    /* border: 2px solid white; */
 }
 .h1_heading{
     text-align: center;
-	font-size: 4em;
-    text-shadow: 2px 2px black;
+	font-size: 2.5em;
+    text-shadow: 3px 2px black;
     color: aliceblue;
+    /* text-shadow: 2px 2px black; */
 }
 
 .listicon{
@@ -116,9 +117,9 @@ form {
 	margin: 20px;
 	padding: 20px;
 	border: 1px solid #ccc;
-	background-color: rgb(154, 215, 245);
+	background-color: rgb(31, 94, 125);
 	border-radius: 10px;
-	width: 80vw;
+	width: 50vw;
 	box-shadow: 2px 2px black;
 	/* text-align: center; */
 }

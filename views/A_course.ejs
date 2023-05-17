@@ -67,7 +67,7 @@
                 <select data-id="<%=id%>" data-cid="<%=cid%>" name="cid" id="cid">
                     <option value="Null">__SELECT__</option>
                     <% courses.forEach(course => { %>
-                        <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                        <option value="<%= course.cid %>"><%= course.cid %>, <%= course.cName %></option>   
                     <% }); %>
                 </select>
                 <% if(cid  != 0) {%>
@@ -89,16 +89,16 @@
 
                 <label for="f2">Faculty 2nd In Charge</label>
                 <select name="f2" id="f2">
-                    <option value='{"username" : "<%=course.f2.username %>", "fName" : "<%= course.f2.fName %>" , "lName" : "<%= course.f2.lName %>" }'"><%= course.f2.username %> ,<%= course.f2.fName %> <%= course.f2.lName %></option>
+                    <option value='{"username" : "<%=course.f2.username %>", "fName" : "<%= course.f2.fName %>" , "lName" : "<%= course.f2.lName %>" }'"><%= course.f2.username %>, <%= course.f2.fName %> <%= course.f2.lName %></option>
                     <% faculties.forEach(faculty => { %>
                         <% if(faculty.username != course.f2.username){ %>
-                        <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %> ,<%= faculty.fName %> <%= faculty.lName %></option>   
+                        <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'><%= faculty.username %>, <%= faculty.fName %> <%= faculty.lName %></option>   
                     <% }}); %>
                 </select>
 
                 <label for="f3">Faculty 3rd In Charge</label>
                 <select name="f3" id="f3">
-                    <option value='{"username" : "<%=course.f3.username %>", "fName" : "<%= course.f3.fName %>" , "lName" : "<%= course.f3.lName %>" }'><%= course.f3.username %> ,<%= course.f3.fName %> <%= course.f3.lName %></option>
+                    <option value='{"username" : "<%=course.f3.username %>", "fName" : "<%= course.f3.fName %>" , "lName" : "<%= course.f3.lName %>" }'><%= course.f3.username %>, <%= course.f3.fName %> <%= course.f3.lName %></option>
                     <% faculties.forEach(faculty => { %>
                         <% if(faculty.username != course.f3.username) {%>
                         <option value='{"username" : "<%= faculty.username %>", "fName" : "<%= faculty.fName %>" , "lName" : "<%= faculty.lName %>" }'"><%= faculty.username %> ,<%= faculty.fName %> <%= faculty.lName %></option>   
@@ -156,7 +156,7 @@
                 <select name="cid" id="cid">
                     <option value="0">__COURSES__</option>
                     <% courses.forEach(course => { %>
-                        <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                        <option value="<%= course.cid %>"><%= course.cid %>, <%= course.cName %></option>   
                     <% }); %>
                 </select>
 

@@ -282,31 +282,39 @@ app.get('/F/:id',(req,res)=>{
 
 
 const attDataGen = (students ,studentAttendance )=>{
-    let n = 0
     let i = 0;
+    let slot = 1;
     let dates = [];
     let courseAtt = [];
-    // console.log(students)
-    for(let j= 0;j<students.length;j++){
-        let sid = students[j].username;
-        let studentatt = [];
-        let c = 0;
-        while(i<studentAttendance.length && studentAttendance[i].sid == sid){
-            studentatt.push(studentAttendance[i]);
-            i++;
-            c++;
+    // console.log(studentAttendance);
+    while(i<studentAttendance.length){
+        dates.push(studentAttendance[i]);
+        let temp = [];
+        for(let j= 0;j<students.length;j++){
+            let sid = students[j].username;
+            let obj = {};
+            obj.sid = sid;
+            obj.slot = slot;
+            // console.log(i , sid ,studentAttendance[i].sid );
+            if(i<studentAttendance.length && sid == studentAttendance[i].sid){
+                obj.newstat = "0";
+              obj.att =   studentAttendance[i].attendance;
+              i++;
+            }else{
+                obj.newstat = "1";
+                obj.att =  false;
+            }
+            temp.push(obj);
         }
-        if(c>n){
-            dates = [...studentatt];
-            n = c;
-        }
-        courseAtt.push(studentatt);
+        courseAtt.push(temp);
+        slot++;
     }
+    
     let res = {};
-    res.dates = dates;
     res.courseAtt = courseAtt;
-    res.n = n;
-    // console.log(dates);
+    // console.log(courseAtt);
+    res.n = students.length;
+    res.dates = dates;
     return res;
 }
 app.get('/F/:id/:cid',(req,res)=>{
@@ -314,11 +322,20 @@ app.get('/F/:id/:cid',(req,res)=>{
     const cid = req.params.cid;
     CourseData.findOne({cid:cid})
     .then(course =>{
-        Attendance.find({ cid : cid}).sort({sid : 1,slot : 1})
+        Attendance.find({ cid : cid}).sort({slot : 1,sid : 1})
         .then(studentAttendance =>{
-        const courseAttendance = attDataGen(course.students ,studentAttendance );
+            let sortedstudents = [...course.students];
+            sortedstudents = sortedstudents.sort((a,b)=>{
+                if(a.username < b.username)
+                    return -1;
+                else
+                    return 1; 
+            });
+            // console.log(sortedstudents);
+        const courseAttendance = attDataGen(sortedstudents ,studentAttendance );
+        course.students = sortedstudents;
         // courseAttendance.push(studentAttendance);
-                    console.log(courseAttendance);
+                    // console.log(courseAttendance);
                     // console.log(courseAttendance.courseAtt);
         res.render('F_attR', {title : "Mark Attendance" ,id,cid ,courseAttendance : courseAttendance.courseAtt ,course ,n :courseAttendance.n,dates : courseAttendance.dates ,display : 1});
 
@@ -336,7 +353,7 @@ app.post('/F/:id/:cid',async (req,res)=>{
     const id = req.params.id;
     const cid = req.params.cid;
     const data = req.body;
-    // console.log(data);
+    console.log(data.attchanges);
     let newSlotAtt= [];
     
     if(data.newstatus == 0){
@@ -352,6 +369,7 @@ app.post('/F/:id/:cid',async (req,res)=>{
         // console.log(newSlotAtt);
         Attendance.insertMany(newSlotAtt)
         .then(async result =>{
+            console.log("Y",data.newstudent);
             Attendance.insertMany(data.newstudent)
             .then(async resu =>{
                 for(const change of data.attchanges){
@@ -365,9 +383,10 @@ app.post('/F/:id/:cid',async (req,res)=>{
         })
         .catch(err =>{console.log(err)})
     }else{
+        
         Attendance.insertMany(data.newstudent)
         .then(async resu =>{
-            // console.log("y");
+            console.log(data.newstudent);
             for(const change of data.attchanges){
            
                 const result = await Attendance.findOneAndUpdate({cid : cid , sid : change.sid , slot : change.slot} , {attendance : change.attendance});

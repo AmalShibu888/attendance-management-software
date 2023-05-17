@@ -19,7 +19,7 @@
             <select name="cid" data-username="<%=id%>" id="cid">
                 <option value="">__COURSES__</option>
                 <% courses.forEach(course => { %>
-                    <option value="<%= course.cid %>"><%= course.cid %> ,<%= course.cName %></option>   
+                    <option value="<%= course.cid %>"><%= course.cid %>, <%= course.cName %></option>   
                 <% }); %>
             </select>
             
@@ -53,14 +53,10 @@
                         
                         <th ><p><%=s%></p><p><%=s2%></p></th>
                         <% for(let j = 0;j<course.students.length;j++){
-                            let studentObj = {
-                                    sid : course.students[j].username,
-                                    slot : i + 1
-                                } 
-                                let s4 = JSON.stringify(studentObj);%>
+                                let s4 = JSON.stringify(courseAttendance[i][j]);%>
                             
-                            <% if(courseAttendance[j].length != 0){ 
-                                if(courseAttendance[j][i].attendance){ %>
+                            <% if(courseAttendance[i][j].newstat == "0"){ 
+                                if(courseAttendance[i][j].att == true){ %>
                                     <td data-changes = "0" data-newstat = "0" data-obj ="<%=s4%>"><i id = "check" class="fa-solid fa-check" style = "color :green"></i></td>
                                 <% }else {%>
                                     <td data-changes = "0" data-newstat = "0" data-obj ="<%=s4%>"><i id = "xmark" class="fa-solid fa-xmark" style = "color : crimson"></i></td>

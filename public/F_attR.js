@@ -79,6 +79,7 @@ const removeSlot = ()=>{
         let table = document.getElementById('attTable').children[0];
         table.removeChild(table.lastChild);
         addSlot();
+        markAttendance();
     })
 }
 
@@ -125,7 +126,7 @@ async function submitChanges(){
     data.newstatus = newstatus;
     data.studentsList = studentsList;
     data.newstudent = newstudent;
-    // console.log(cid);
+    // console.log(data);
     fetch(`/F/${id}/${cid}` , {
         method : "POST",
         headers: {

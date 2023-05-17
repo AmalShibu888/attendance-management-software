@@ -33,7 +33,7 @@
             <table data-id="<%=id%>" data-cid="<%=cid%>" id="attTable">
                 <tr>
                     <% dates.forEach(date =>{ %>
-                        <th><p><%=date.date %></p>, <p><%=date.time%></p></th>
+                        <th><p><%=date.date %></p> <p><%=date.time%></p></th>
                     <% }) %>
                 </tr>
                 <tr>
@@ -47,7 +47,6 @@
                 </tr>
             </table>            
         </section>
-        <button id="subButton" class="form-button">Save Changes</button>
         <% } %>
     </div>
     <script type="text/javascript" src="/S_attView.js"></script>

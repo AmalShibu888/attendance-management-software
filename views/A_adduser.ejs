@@ -53,7 +53,7 @@
                 <select name="username" id="username">
                     <option value="all">__USERS__</option>
                     <% users.forEach(user => { %>
-                        <option value="<%= user.username %>"><%= user.username %> ,<%= user.fName %> <%= user.lName %></option>   
+                        <option value="<%= user.username %>"><%= user.username %>, <%= user.fName %> <%= user.lName %></option>   
                     <% }); %>
                 </select>
                 <button type="submit" class="form-button">Delete</button>
@@ -67,7 +67,7 @@
                 <select name="username" id="username">
                     <option value="all">__USERS__</option>
                     <% users.forEach(user => { %>
-                        <option value="<%= user.username %>"><%= user.username %> ,<%= user.fName %> <%= user.lName %></option>   
+                        <option value="<%= user.username %>"><%= user.username %>, <%= user.fName %> <%= user.lName %></option>   
                     <% }); %>
                 </select>
                 <button type="submit" class="form-button">Reset</button>
